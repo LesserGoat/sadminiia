@@ -1,0 +1,46 @@
+package sample;
+
+public class Containers {
+    private String name;
+    private String containerType;
+    private int maxCapacity;
+
+
+    public Containers (String cName, String cType)
+    {
+        name = cName;
+        containerType = cType;
+    }
+
+    public String getName()
+    {
+        return name;
+    }
+
+    public int getCapacity()
+    {
+        return maxCapacity;
+    }
+
+    public String getType()
+    {
+        return containerType;
+    }
+
+    public void setType(String type)
+    {
+        containerType = type;
+    }
+
+
+    public String writeContainer()
+    {
+        return name + "\n" + containerType;
+    }
+
+    public String toString()
+    {
+        return name + ", Type: " + containerType;
+    }
+
+}
