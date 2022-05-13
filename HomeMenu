@@ -1,0 +1,167 @@
+package sample;
+
+import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.stage.FileChooser;
+import javafx.scene.Scene;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.GridPane;
+import javafx.stage.Stage;
+import javafx.scene.layout.*;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.scene.chart.PieChart;
+import javafx.scene.chart.PieChart.Data;
+import java.io.File;
+
+import java.io.FileWriter;
+import java.net.URL;
+import java.util.ArrayList;
+import java.io.File;
+import java.io.Writer;
+import java.util.Collections;
+import java.util.Scanner;
+import javafx.scene.control.*;
+
+public class HomeMenu {
+    String currentType = "a";
+    public HomeMenu(Stage root){
+        //container Arraylist for container display
+        ArrayList<Containers> str = new ArrayList<Containers>();
+        root.setTitle("Home");
+        GridPane homeRoot = new GridPane();
+        ScrollPane scrollHomeRoot = new ScrollPane(homeRoot);
+        root.setScene(new Scene(scrollHomeRoot,400,400));
+        Button viewInventory = new Button("Add to Inventory/View Inventory");
+        Button createContainer = new Button("Create Container");
+        Label infoLabel = new Label("Click on a container and then press Add to Inventory/View Inventory to access inventory");
+
+        viewInventory.setOnAction(event -> {
+            if(currentType.contains("Imperishable") || currentType.contains("imperishable"))
+            {
+                new ImperishableInventoryMenu();
+            }
+            else
+            {
+                new InventoryMenu();
+            }
+            root.close();
+
+        });
+
+        createContainer.setOnAction(event -> {
+            new ContainerCreation();
+            root.close();
+
+        });
+
+            try {
+                Scanner s = new Scanner(new File(UsernameStorage.getUserName()+"containers.txt"));
+                str.removeAll(str);// when using an arraylist that I have used before....I remove ALL of them and then
+                //the next line I will add them all back
+                while (s.hasNext()) {
+                    Containers cont = new Containers(s.nextLine(), s.nextLine());
+                    str.add(cont); //this will store each line
+                }
+                //the following creates an arraylist of buttons
+                String TempID = "";
+                String tempString = "";
+
+
+
+                for (int i = 0; i < str.size(); i++)
+                {
+                    tempString = tempString +str.get(i).getName() + "\n";
+
+                    // The button way
+                    TempID = "container" +i;
+                    Button but= new Button(str.get(i).getName());
+                    int currentInt = i;
+                    but.setId(TempID);
+                    but.setOnAction(event -> {
+                        ContainerNameStorage.setContainerName(but.getText());
+                        currentType = (str.get(currentInt).getType());
+                });
+                    homeRoot.add(but, 1, i);
+                    Button removeBut= new Button("x");
+                    homeRoot.add(removeBut, 0, i);
+                    removeBut.setOnAction(event -> {
+                        //Create new arraylist
+                        while (s.hasNext()) {
+                            Containers stu = new Containers(s.nextLine(), s.nextLine());
+                            str.add(stu); //this will store each line
+                        }
+                        str.remove(currentInt);
+                        System.out.println(str);
+
+                        try {
+                            //writes into file
+                            Writer w = new FileWriter(UsernameStorage.getUserName()+"containers.txt");
+                            for (int k = 0; k < str.size(); k++) {
+                                w.write(str.get(k).writeContainer() + "\n");
+                                System.out.println(str.get(k).writeContainer());
+                            }
+
+                            //Deleting of the File
+                            //I am in Spain without the s.
+                            try
+                            {
+
+                                //file to be deleted
+                                File file = new File(UsernameStorage.getUserName()+but.getText()+".txt");
+                                String path = file.getAbsolutePath();
+                                System.out.println(path);
+                                File finalFile = new File(file.getAbsolutePath());
+                                if(finalFile.delete())                 //returns Boolean value
+                                {
+                                    System.out.println(file + " deleted");   //getting and printing the file name
+                                }
+                                else {
+                                    System.out.println("deletion failed");
+                                }
+
+
+
+                            }
+                            catch(Exception e)
+                            {
+                                e.printStackTrace();
+                            }
+
+                            w.close();
+                            new HomeMenu(root);
+
+
+
+
+                        } catch (Exception e) {
+                            System.out.println("error in writing");
+                        }
+
+                    });
+
+
+
+                }
+
+                homeRoot.add(infoLabel,1,str.size()+1);
+                homeRoot.add(viewInventory,1,str.size()+2);
+                homeRoot.add(createContainer,1,str.size()+3);
+
+            }
+            catch(Exception e){System.out.println("error in reading for containers");}
+
+        if(str.size() <= 0)
+        {
+            homeRoot.add(viewInventory,1,1);
+            homeRoot.add(createContainer,1,2);
+        }
+
+        };
+
+    
+
+
+
+    }
