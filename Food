@@ -68,8 +68,7 @@ public class Food {
 
     public String toString()
     {
-        return name + ", Type: " + foodType + ", Count:" + amount + ", Expires:" + expirationMonth + "/" + expirationDate + "/" + expirationYear +
-                ", Purchased:" + purchaseMonth + "/" + purchaseDate + "/" + purchaseYear;
+        return name + ", Exit time:" + exitTime + ", Return Time:" + returnTime + "Total Time" + Totaltime;
     }
 
 }
