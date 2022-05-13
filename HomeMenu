@@ -38,14 +38,7 @@ public class HomeMenu {
         Label infoLabel = new Label("Click on a container and then press Add to Inventory/View Inventory to access inventory");
 
         viewInventory.setOnAction(event -> {
-            if(currentType.contains("Imperishable") || currentType.contains("imperishable"))
-            {
-                new ImperishableInventoryMenu();
-            }
-            else
-            {
                 new InventoryMenu();
-            }
             root.close();
 
         });
