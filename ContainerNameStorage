@@ -1,0 +1,20 @@
+package sample;
+
+public class ContainerNameStorage {
+    private static String containerName;
+
+    public ContainerNameStorage (String cName)
+    {
+        containerName = cName;
+    }
+
+    public static String getContainerName()
+    {
+        return containerName;
+    }
+
+    public static void setContainerName(String coName)
+    {
+        containerName = coName;
+    }
+}
