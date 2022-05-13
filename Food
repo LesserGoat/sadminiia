@@ -68,7 +68,7 @@ public class Food {
 
     public String toString()
     {
-        return name + ", Exit time:" + exitTime + ", Return Time:" + returnTime + "Total Time" + Totaltime;
+        return name + ", Exit time:" + exitTime + ", Return Time:" + returnTime + "Total Time:" + Totaltime;
     }
 
 }
