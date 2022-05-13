@@ -81,22 +81,20 @@ public class Main extends Application {
         //First Scene (Home)
         //Creating labels and textfields
         Label firstLabel = new Label("Welcome! Please enter login info!");
-        Label userLabel = new Label("Username");
+        Label userLabel = new Label("Class name and Period");
         TextField enterUser = new TextField();
-        Label passwordLabel = new Label("Password:");
-        TextField enterPassword = new TextField();
         //Creating buttons and functions
-        Button newAccount = new Button("Create new Account?");
+        Button newAccount = new Button("Create new Class?");
         newAccount.setOnAction(event -> {
             primaryStage.setScene(accountCreator);
         });
         Button homeSubmit = new Button("Submit");
         homeSubmit.setOnAction(event -> {
-            if (userInformation.contains((enterUser.getText()) + (enterPassword.getText()))) {
+            if (userInformation.contains(enterUser.getText())) {
                 UsernameStorage.setUserName(enterUser.getText());
                 new HomeMenu(primaryStage);
             } else {
-                System.out.println("Account not found");
+                System.out.println("Class not found");
             }
         });
 
@@ -112,28 +110,20 @@ public class Main extends Application {
         //Second Scene (Create Login)
         //Creating labels and textfields
         Label creatorHeader = new Label("Account Creation");
-        Label usernameCreateLabel = new Label("Create Username:");
+        Label usernameCreateLabel = new Label("Create Class, FORMAT: Class Period");
         TextField createUsername = new TextField();
-        Label passwordCreateLabel = new Label("Create Password:");
-        TextField createPassword = new TextField();
-        Label passwordConfirmLabel = new Label("Confirm Password:");
-        TextField confirmPassword = new TextField();
         //Creating buttons and functions
         Button creatorSubmit = new Button("Submit");
         creatorSubmit.setOnAction(event -> {
             try {
-                if (userInformation.contains((enterUser.getText()))) {
-                    System.out.println("User already exists");
+                if (userInformation.contains(enterUser.getText())) {
+                    System.out.println("Class already exists");
                 } else {
-                    if (createPassword.getText().equals(confirmPassword.getText())) {
                         Writer userInfo = new FileWriter("userInfo.txt", true);
-                        userInfo.write((createUsername.getText()) + (createPassword.getText()) + "\n");
+                        userInfo.write((createUsername.getText())"\n");
                         userInfo.close();
-                        userInformation.add((createUsername.getText()) + (createPassword.getText()));
+                        userInformation.add(createUsername.getText());
                         primaryStage.setScene(firstScene);
-                    } else {
-                        System.out.println("Password and Password Confirmation do not match");
-                    }
                 }
             } catch (Exception e) {
                 System.out.println("exception, failure to write");
@@ -148,10 +138,6 @@ public class Main extends Application {
         accountCreatorRoot.add(creatorHeader, 0, 0);
         accountCreatorRoot.add(usernameCreateLabel, 0, 1);
         accountCreatorRoot.add(createUsername, 1, 1);
-        accountCreatorRoot.add(passwordCreateLabel, 0, 2);
-        accountCreatorRoot.add(createPassword, 1, 2);
-        accountCreatorRoot.add(passwordConfirmLabel, 0, 3);
-        accountCreatorRoot.add(confirmPassword, 1, 3);
         accountCreatorRoot.add(creatorBack, 0, 4);
         accountCreatorRoot.add(creatorSubmit, 1, 4);
 
