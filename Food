@@ -8,27 +8,17 @@ import java.text.SimpleDateFormat;
 
 public class Food {
     private String name;
-    private int expirationDate;
-    private int expirationMonth;
-    private int expirationYear;
-    private String foodType;
-    private int amount;
-    private int purchaseDate;
-    private int purchaseMonth;
-    private int purchaseYear;
+    private int exitTime;
+    private int returnTime;
+    private int totalTime;
 
 
-    public Food (String fName, String fType, int fAmount, int fMonth, int fDate, int fYear, int fpDate, int fpMonth, int fpYear)
+    public Food (String fName, int eT, int rT, int tT)
     {
         name = fName;
-        foodType = fType;
-        amount = fAmount;
-        expirationDate = fDate;
-        expirationMonth = fMonth;
-        expirationYear = fYear;
-        purchaseDate = fpDate;
-        purchaseMonth = fpMonth;
-        purchaseYear = fpYear;
+        exitTime = eT;
+        returnTime = rT;
+        totalTime = tT;
 
     }
 
@@ -41,92 +31,39 @@ public class Food {
     {
         name = nam;
     }
-
-    public String getType()
+    
+    public String getExit()
     {
-        return foodType;
+        return exitTime;
     }
 
-    public void setType(String type)
+    public void setExit(int eT)
     {
-        foodType = type;
+        exitTime = eT;
+    }
+    
+    public String getReturn()
+    {
+        return returnTime;
     }
 
-    public int getAmount()
+    public void setReturn(int rT)
     {
-        return amount;
+        returnTime = rT;
+    }
+    
+    public String getTotal()
+    {
+        totalTime = exitTime - returnTime;
+        return totalTime;
     }
 
-    public void setAmount(int theAmount)
-    {
-        amount = theAmount;
-    }
-
-    public int getDate()
-    {
-        return expirationDate;
-    }
-
-    public int getMonth()
-    {
-        return expirationMonth;
-    }
-
-    public int getYear()
-    {
-        return expirationYear;
-    }
-
-    public int getPDate()
-    {
-        return purchaseDate;
-    }
-
-    public int getPMonth()
-    {
-        return purchaseMonth;
-    }
-
-    public int getPYear()
-    {
-        return purchaseYear;
-    }
-
-    public void checkExpiration()
-    {
-
-        //Get current date
-        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yy/MM/dd");
-        DateTimeFormatter dateDate = DateTimeFormatter.ofPattern("dd");
-        DateTimeFormatter monthMonth = DateTimeFormatter.ofPattern("MM");
-        DateTimeFormatter yearYear = DateTimeFormatter.ofPattern("yy");
-        LocalDate now = LocalDate.now();
-        //LocalDate expiration = LocalDate.of(expirationYear,expirationMonth,expirationDate);
-
-        System.out.println(dtf.format(now));
 
 
-        String input = expirationYear+"/"+expirationMonth+"/"+expirationDate;
-        int totalExpirationDate = ((expirationYear*100000)+(expirationMonth*100)+(expirationDate));
-        int totalYear = Integer.valueOf(yearYear.format(now));
-        int totalMonth = Integer.valueOf(monthMonth.format(now));
-        int totalDate = Integer.valueOf(dateDate.format(now));
-        int totalCurrentDate = ((totalYear*100000)+(totalMonth*100)+(totalDate));
-        System.out.println(totalCurrentDate);
-        System.out.println(totalExpirationDate);
-        //LocalDate expDate = LocalDate.parse(input);
-
-        //if(expiration.isEqual(now) || expiration.isBefore(now))
-        if(totalExpirationDate <= totalCurrentDate)
-        {
-            name = "EXPIRED: " + name;
-        }
-    }
 
     public String writeFood()
     {
-        return name + "\n" + foodType + "\n" + amount + "\n" + expirationMonth + "\n" + expirationDate + "\n" + expirationYear +
-                "\n" + purchaseMonth + "\n" + purchaseDate + "\n" + purchaseYear;
+        return name + "\n" + exitTime + "\n" + amount + "\n" + returnTime + "\n" + totalTime;
     }
 
     public String toString()
