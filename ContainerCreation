@@ -1,0 +1,127 @@
+package sample;
+
+import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.GridPane;
+import javafx.stage.Stage;
+import javafx.scene.layout.*;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.scene.chart.PieChart;
+import javafx.scene.chart.PieChart.Data;
+
+import java.io.FileWriter;
+import java.util.ArrayList;
+import java.io.File;
+import java.io.Writer;
+import java.util.Scanner;
+import javafx.scene.control.*;
+
+public class ContainerCreation {
+    public ContainerCreation() {
+        ArrayList<Containers> str = new ArrayList<Containers>();
+
+        //create primary Stage
+        Stage primaryStage = new Stage();
+
+        //create second stage
+        Stage secondStage = new Stage();
+
+        //Create Third Stage
+        Stage thirdStage = new Stage();
+
+        //Create Fourth Stage
+        Stage fourthStage = new Stage();
+
+        //gridpane roots
+        GridPane root = new GridPane();
+        GridPane container = new GridPane();
+
+        //main root
+        TextField nameText = new TextField();
+        Label nameLabel = new Label("Container Name:");
+        TextField typeText = new TextField();
+        Label typeLabel = new Label("Container Type:");
+        Label maxLabel = new Label("Type is Perishable or Imperishable");
+        Label maxLabelII = new Label("Other inputs default to Perishable");
+        Label info = new Label("Status");
+
+
+        Button submitB = new Button("submit");
+        Button containerBack = new Button("Back");
+        root.add(nameLabel, 0, 0);
+        root.add(nameText, 1, 0);
+        root.add(typeLabel, 0, 1);
+        root.add(typeText, 1, 1);
+        root.add(maxLabel, 1, 2);
+        root.add(maxLabelII, 1, 3);
+        root.add(submitB,0,4);
+        root.add(containerBack, 0, 5);
+        root.add(info,0,6);
+
+
+        //ArrayList<Food> str = new ArrayList<Food>();
+
+        containerBack.setOnAction(value ->
+        {
+            new HomeMenu(primaryStage);
+        });
+
+        submitB.setOnAction(value ->
+        {
+            str.removeAll(str);// when using an arraylist that I have used before....I remove ALL of them and then
+            String name = nameText.getText();
+            String containerType = typeText.getText();
+            Containers theContainer = new Containers(name, containerType);
+            str.add(theContainer);
+            try {
+                Writer w = new FileWriter(UsernameStorage.getUserName() + "containers.txt", true);
+                for (int i = 0; i < str.size(); i++) {
+                    w.write(str.get(i).writeContainer() + "\n");
+                }
+                w.close();
+                info.setText("Created Container:" + name);
+
+
+            } catch (Exception e) {
+                info.setText("error in writing");
+            }
+
+            //Updates upon adding item
+            try {
+                Scanner s = new Scanner(new File(UsernameStorage.getUserName() + "containers.txt"));
+                str.removeAll(str);// when using an arraylist that I have used before....I remove ALL of them and then
+                //the next line I will add them all back
+                while (s.hasNext()) {
+                    Containers stu = new Containers(s.nextLine(), s.nextLine());
+                    str.add(stu); //this will store each line
+                }
+                //the following creates an arraylist of buttons
+                String TempID = "";
+                String tempString = "";
+
+                for (int i = 0; i < str.size(); i++) {
+                    tempString = tempString + str.get(i).toString() + "\n";
+
+                    // The button way
+                    TempID = "food" + i;
+                    Button but = new Button(str.get(i).toString());
+                    but.setId(TempID);
+                    container.add(but, 0, i);
+
+
+                }
+
+            } catch (Exception e) {
+                System.out.println("error in reading");
+            }
+
+
+        });
+
+        primaryStage.setScene(new Scene(root, 300, 300));
+        primaryStage.show();
+    }}
