@@ -1,0 +1,21 @@
+package sample;
+
+public class UsernameStorage {
+    private static String userName;
+
+    public UsernameStorage (String uName)
+    {
+        userName = uName;
+    }
+
+    public static String getUserName()
+    {
+        return userName;
+    }
+
+    public static void setUserName(String usName)
+    {
+        userName = usName;
+    }
+
+}
