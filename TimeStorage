@@ -1,0 +1,27 @@
+package sample;
+
+public class TimeStorage {
+
+    private static int exit;
+    private static int entrance;
+
+    public static int getExit()
+    {
+        return exit;
+    }
+
+    public static void setExit(int e)
+    {
+        exit = e;
+    }
+
+    public static int getReturn()
+    {
+        return entrance;
+    }
+
+    public static void setReturn(int e)
+    {
+        entrance = e;
+    }
+}
