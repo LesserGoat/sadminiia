@@ -102,8 +102,6 @@ public class Main extends Application {
         root.add(firstLabel, 0, 0);
         root.add(userLabel, 0, 1);
         root.add(enterUser, 1, 1);
-        root.add(passwordLabel, 0, 2);
-        root.add(enterPassword, 1, 2);
         root.add(homeSubmit, 0, 3);
         root.add(newAccount, 0, 4);
 
@@ -119,11 +117,11 @@ public class Main extends Application {
                 if (userInformation.contains(enterUser.getText())) {
                     System.out.println("Class already exists");
                 } else {
-                        Writer userInfo = new FileWriter("userInfo.txt", true);
-                        userInfo.write((createUsername.getText())"\n");
-                        userInfo.close();
-                        userInformation.add(createUsername.getText());
-                        primaryStage.setScene(firstScene);
+                    Writer userInfo = new FileWriter("userInfo.txt", true);
+                    userInfo.write((createUsername.getText()) + "\n");
+                    userInfo.close();
+                    userInformation.add(createUsername.getText());
+                    primaryStage.setScene(firstScene);
                 }
             } catch (Exception e) {
                 System.out.println("exception, failure to write");
