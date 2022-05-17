@@ -1,5 +1,10 @@
 package sample;
 
+import javafx.scene.layout.GridPane;
+import javafx.stage.Stage;
+
+import java.time.LocalDateTime;
+
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -16,13 +21,13 @@ import java.time.format.DateTimeFormatter;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Collections;
-
-
 import java.io.FileWriter;
 import java.util.ArrayList;
 import java.io.File;
 import java.io.Writer;
 import java.util.Scanner;
+import java.util.concurrent.atomic.AtomicInteger;
+
 import javafx.scene.control.*;
 
 public class InventoryMenu {
@@ -53,26 +58,13 @@ public class InventoryMenu {
 
         //main root
         TextField nameText = new TextField();
-        Label nameLabel = new Label("Food Name:");
-        TextField typeText = new TextField();
-        Label typeLabel = new Label("Food Type:");
-        TextField monthText = new TextField();
-        Label amountLabel = new Label("Enter Amount:");
-        //Expiration Date
-        TextField amountText = new TextField();
-        Label dateInfo = new Label("Date is entered MM/DD/YY each input is separate");
-        Label monthLabel = new Label("Expiration Month:");
-        TextField dateText = new TextField();
-        Label dateLabel = new Label("Expiration Day:");
-        TextField yearText = new TextField();
-        Label yearLabel = new Label("Expiration Year:");
-        //Purchase date
-        TextField pMonthText = new TextField();
-        Label pMonthLabel = new Label("Purchase Month:");
-        TextField pDateText = new TextField();
-        Label pDateLabel = new Label("Purchase Day:");
-        TextField pYearText = new TextField();
-        Label pYearLabel = new Label("Purchase Year:");
+        Label nameLabel = new Label("Destination:");
+        //Numbers
+        Button returnButton = new Button();
+        Label returnLabel = new Label("Set Return Time:");
+        Button exitButton = new Button();
+        Label exitLabel = new Label("Set Exit Time:");
+
 
         Button  SubmitB = new Button("submit");
         Button  viewInventoryB = new Button("View Inventory");
@@ -80,30 +72,14 @@ public class InventoryMenu {
         Button  inventoryBack = new Button("Back");
         root.add(nameLabel,0,0);
         root.add(nameText,1,0);
-        root.add(typeLabel,0,1);
-        root.add(typeText,1,1);
-        root.add(amountLabel,0,2);
-        root.add(amountText,1,2);
-        root.add(dateInfo,1,3);
-        root.add(monthLabel,0,4);
-        root.add(monthText,1,4);
-        root.add(dateLabel,0,5);
-        root.add(dateText,1,5);
-        root.add(yearLabel,0,6);
-        root.add(yearText,1,6);
-        root.add(pMonthLabel,0,7);
-        root.add(pMonthText,1,7);
-        root.add(pDateLabel,0,8);
-        root.add(pDateText,1,8);
-        root.add(pYearLabel,0,9);
-        root.add(pYearText,1,9);
-        root.add(SubmitB,0,10);
-        root.add(viewInventoryB,0,11);
-        root.add(inventoryBack,0,12);
-        //singular inventory chart thing.
-        //inventory.add(viewChartB,1,10);
+        root.add(exitLabel,0,1);
+        root.add(exitButton,1,1);
+        root.add(returnLabel,0,2);
+        root.add(returnButton,1,2);
+        root.add(SubmitB,0,3);
+        root.add(viewInventoryB,1,3);
 
-        //ArrayList<Food> str = new ArrayList<Food>();
+
 
         inventoryBack.setOnAction(value ->
         {
@@ -114,22 +90,11 @@ public class InventoryMenu {
         {
             str.removeAll(str);// when using an arraylist that I have used before....I remove ALL of them and then
             String name = nameText.getText();
-            String foodType = typeText.getText();
-            String fAmount = amountText.getText();
-            String expirationMonth = monthText.getText();
-            String expirationDate = dateText.getText();
-            String expirationYear = yearText.getText();
-            String purchaseDate = pMonthText.getText();
-            String purchaseMonth = pDateText.getText();
-            String purchaseYear = pYearText.getText();
-            int foodAmount = Integer.parseInt(fAmount);
-            int dateInt = Integer.parseInt(expirationDate);
-            int monthInt = Integer.parseInt(expirationMonth);
-            int yearInt = Integer.parseInt(expirationYear);
-            int pDateInt = Integer.parseInt(purchaseDate);
-            int pMonthInt = Integer.parseInt(purchaseMonth);
-            int pYearInt = Integer.parseInt(purchaseYear);
-            Food foodItem = new Food(name, foodType, foodAmount, monthInt, dateInt, yearInt, pDateInt, pMonthInt, pYearInt);
+            int exitTime = TimeStorage.getExit();
+            int entranceTime = TimeStorage.getReturn();
+
+
+            Food foodItem = new Food(nameText.getText(), exitTime, entranceTime);
             str.add(foodItem);
             try{
                 Writer w = new FileWriter(UsernameStorage.getUserName()+ContainerNameStorage.getContainerName()+".txt", true);
@@ -141,6 +106,7 @@ public class InventoryMenu {
                 w.close();
 
 
+
             }catch (Exception e){System.out.println("error in writing");}
 
             //Updates upon adding item
@@ -149,7 +115,7 @@ public class InventoryMenu {
                 str.removeAll(str);// when using an arraylist that I have used before....I remove ALL of them and then
                 //the next line I will add them all back
                 while (s.hasNext()) {
-                    Food stu = new Food(s.nextLine(), s.nextLine(), Integer.parseInt(s.nextLine()), Integer.parseInt(s.nextLine()),Integer.parseInt(s.nextLine()),Integer.parseInt(s.nextLine()),Integer.parseInt(s.nextLine()),Integer.parseInt(s.nextLine()), Integer.parseInt(s.nextLine()));
+                    Food stu = new Food(s.nextLine(), Integer.parseInt(s.nextLine()), Integer.parseInt(s.nextLine()));
                     str.add(stu); //this will store each line
                 }
                 //the following creates an arraylist of buttons
@@ -191,7 +157,7 @@ public class InventoryMenu {
                 searchList.removeAll(searchList);// when using an arraylist that I have used before....I remove ALL of them and then
                 //the next line I will add them all back
                 while (s.hasNext()) {
-                    Food stu = new Food(s.nextLine(), s.nextLine(), Integer.parseInt(s.nextLine()), Integer.parseInt(s.nextLine()),Integer.parseInt(s.nextLine()),Integer.parseInt(s.nextLine()),Integer.parseInt(s.nextLine()),Integer.parseInt(s.nextLine()), Integer.parseInt(s.nextLine()));
+                    Food stu = new Food(s.nextLine(), Integer.parseInt(s.nextLine()), Integer.parseInt(s.nextLine()));
                     str.add(stu); //this will store each line
                 }
 
@@ -240,15 +206,46 @@ public class InventoryMenu {
 
         });
 
+        exitButton.setOnAction(value ->
+        {
+            try {
+                LocalDateTime date = LocalDateTime.now();
+                int seconds = date.toLocalTime().toSecondOfDay();
+                TimeStorage.setExit(seconds);
+
+
+                }
+            catch(Exception e) {
+                System.out.println("error in getting current time");
+            }
+        });
+
+        returnButton.setOnAction(value ->
+        {
+            try {
+                    LocalDateTime date = LocalDateTime.now();
+                    int seconds = date.toLocalTime().toSecondOfDay();
+                    TimeStorage.setReturn(seconds);
+                }
+            catch(Exception e) {
+                System.out.println("error in getting current time");
+            }
+
+        });
+
+
+
+
         viewInventoryB.setOnAction(value ->
         {
+            int trueTime = 0;
             try {
                 Scanner s = new Scanner(new File(UsernameStorage.getUserName()+ContainerNameStorage.getContainerName()+".txt"));
                 str.removeAll(str);// when using an arraylist that I have used before....I remove ALL of them and then
                 //the next line I will add them all back
                 while (s.hasNext()) {
-                    Food stu = new Food(s.nextLine(), s.nextLine(), Integer.parseInt(s.nextLine()), Integer.parseInt(s.nextLine()),Integer.parseInt(s.nextLine()),Integer.parseInt(s.nextLine()),Integer.parseInt(s.nextLine()),Integer.parseInt(s.nextLine()), Integer.parseInt(s.nextLine()));
-                    stu.checkExpiration();
+                    Food stu = new Food(s.nextLine(), Integer.parseInt(s.nextLine()), Integer.parseInt(s.nextLine()));
+                    trueTime = trueTime + stu.getTotal();
                     str.add(stu); //this will store each line
                 }
 
@@ -274,7 +271,7 @@ public class InventoryMenu {
                         str.remove(currentInd);
                         //Create new arraylist
                         while (s.hasNext()) {
-                            Food stu = new Food(s.nextLine(), s.nextLine(), Integer.parseInt(s.nextLine()), Integer.parseInt(s.nextLine()),Integer.parseInt(s.nextLine()),Integer.parseInt(s.nextLine()),Integer.parseInt(s.nextLine()),Integer.parseInt(s.nextLine()), Integer.parseInt(s.nextLine()));
+                            Food stu = new Food(s.nextLine(), Integer.parseInt(s.nextLine()), Integer.parseInt(s.nextLine()));
                             str.add(stu); //this will store each line
                         }
                         s.close();
@@ -302,6 +299,8 @@ public class InventoryMenu {
 
 
                 }
+                Label trueLabel = new Label("Total Time Out: " + trueTime);
+                inventory.add(trueLabel,1,str.size()+1);
                 inventory.add(searchLabel,1,str.size()+2);
                 inventory.add(searchField,1,str.size()+3);
                 inventory.add(viewChartB,1,str.size()+4);
@@ -312,59 +311,15 @@ public class InventoryMenu {
 
         });
 
-
-        //chart root
-        PieChart piechart = new PieChart();
-
-        //setting the data of the pie chart.
-        piechart.setData(getChartData());
-
-        //Creating Layout
-        StackPane chartPie = new StackPane();
-
-        //Adding stuff to gridpane
-        chartPie.getChildren().add(piechart);
-
-        viewChartB.setOnAction(value ->
-        {
-            piechart.setData(getChartData());
-            thirdStage.show();
-        });
-
-
-
-        primaryStage.setTitle("Perishable Container");
-        primaryStage.setScene(new Scene(root, 400, 400));
         secondStage.setScene(new Scene(scrollableInventory, 400, 400));
-        thirdStage.setScene(new Scene(chartPie,400,400));
-        fourthStage.setScene(new Scene(scrollableInventorySearch,400,400));
+
+        primaryStage.setScene(new Scene(root, 400, 400));
+
         primaryStage.show();
     }
 
 
 
 
-    private ObservableList<Data> getChartData() {
-        //Get entire arraylist from the txt file
-        ArrayList<Food> str = new ArrayList<Food>();
-        try {
-            Scanner s = new Scanner(new File(UsernameStorage.getUserName()+ContainerNameStorage.getContainerName()+".txt"));
-            str.removeAll(str);// when using an arraylist that I have used before....I remove ALL of them and then
-            //the next line I will add them all back
-            while (s.hasNext()) {
-                Food stu = new Food(s.nextLine(), s.nextLine(), Integer.parseInt(s.nextLine()), Integer.parseInt(s.nextLine()), Integer.parseInt(s.nextLine()), Integer.parseInt(s.nextLine()), Integer.parseInt(s.nextLine()), Integer.parseInt(s.nextLine()), Integer.parseInt(s.nextLine()));
-                str.add(stu); //this will store each line
-            }
-        }catch(Exception e){System.out.println("error in reading for getchartdata");}
 
-        ObservableList<Data> list = FXCollections.observableArrayList();
-
-
-        //Creates Actual Chart
-        for (int i = 0; i<str.size();i++)
-        {
-            list.add(new PieChart.Data(str.get(i).getName(),str.get(i).getAmount()));
-        }
-        return list;
-    }
 }
