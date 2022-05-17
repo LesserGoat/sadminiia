@@ -88,7 +88,7 @@ public class ContainerCreation {
                 str.removeAll(str);// when using an arraylist that I have used before....I remove ALL of them and then
                 //the next line I will add them all back
                 while (s.hasNext()) {
-                    Containers stu = new Containers(s.nextLine(), s.nextLine());
+                    Containers stu = new Containers(s.nextLine());
                     str.add(stu); //this will store each line
                 }
                 //the following creates an arraylist of buttons
